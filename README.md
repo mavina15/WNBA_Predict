@@ -38,8 +38,20 @@ The Version 2 model favors the Las Vegas Aces over the New York Liberty at eithe
 - `advanced_stats.csv`: 2023 end-of-season team advanced stats (used by Version 1)
 - `predict.ipynb`: Version 1
 - `predict_v2.ipynb`: Version 2, the honest re-test
+- `wnba_model.py`: pre-game features, model and walk-forward test used by the app
+- `app.py`: the Streamlit web app
+- `requirements.txt`: packages for the app
 
-## Run it
+## Web app
+
+`app.py` is a Streamlit app built on Version 2. Pick a home and away team to get a win probability, see the walk-forward accuracy results, and browse each team's rating.
+
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
+
+## Run the notebook
 
 ```bash
 pip install pandas scikit-learn jupyter
