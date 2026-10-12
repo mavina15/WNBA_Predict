@@ -1,46 +1,49 @@
-# WNBA Prediction Project
+# WNBA Game Prediction (2023 season)
 
-## Overview
+Can team statistics predict who wins a WNBA game? This project builds a model to predict whether the home team wins, then re-tests it honestly.
 
-The WNBA Prediction project is a predictive modeling project aimed at forecasting the outcomes of WNBA basketball games. Using machine learning techniques, the project involves data cleaning, feature selection, and model training to predict whether the home team will win or lose a game. The model achieved an accuracy of approximately 70.4%.
+## Results at a glance
 
-## Table of Contents
+| Approach (tested on 160 games, late June to September 2023) | Accuracy |
+|---|---|
+| Model: record + point margin so far | 68.8% |
+| Elo rating favorite | 68.8% |
+| Team with the better point margin so far | 66.9% |
+| Team with the better record so far | 66.2% |
+| Model: all 5 pre-game features | 62.5% |
+| Always pick the home team | 53.8% |
 
-1. [Installation](#installation)
-2. [Project Structure](#project-structure)
-3. [Usage](#usage)
-4. [Technologies Used](#technologies-used)
+Every prediction above uses only games played **before** the game being predicted. With 160 test games, differences of a few points are within noise (the full model's 90% interval is 56% to 69%).
 
-## Installation
+## Version 1 vs. Version 2
 
-To run this project, ensure you have the required Python packages installed:
+- **Version 1 (`predict.ipynb`)** reported about 70% accuracy. It used each team's *end-of-season* stats (including total wins and losses) to predict games from the same season, so the stats already contained the results being predicted. Simply picking the team with the better final record scores 73% on the same games.
+- **Version 2 (`predict_v2.ipynb`)** rebuilds the features from earlier games only (win percentage, average margin, last-5 form, rest days and an Elo rating) and tests walk-forward through the season.
+
+## 2023 Finals
+
+The Version 2 model favors the Las Vegas Aces over the New York Liberty at either venue. The Aces won the series 3–1, so the model would have called 3 of 4 games.
+
+## What I learned
+
+- Check for data leakage before trusting a high score.
+- Always compare against a simple baseline.
+- Report uncertainty, especially with one season of data.
+
+**Next steps:** add prior seasons, player availability and injuries, and test on the 2024 season.
+
+## Files
+
+- `reg_season.csv`: 2023 regular-season schedule and scores (240 games)
+- `advanced_stats.csv`: 2023 end-of-season team advanced stats (used by Version 1)
+- `predict.ipynb`: Version 1
+- `predict_v2.ipynb`: Version 2, the honest re-test
+
+## Run it
 
 ```bash
-pip install pandas scikit-learn
+pip install pandas scikit-learn jupyter
+jupyter notebook predict_v2.ipynb
 ```
 
-## Project Structure
-
-The project is organized into several parts:
-
-- **Part 1: Cleaning Data:** Involves importing and cleaning schedule and advanced statistics data, merging datasets, and preparing the data for modeling.
-
-- **Part 2: Determining Predictors:** Utilizes Sequential Feature Selector to identify the top 10 predictors for the model.
-
-- **Part 3: Creating and Testing Model:** Implements a logistic regression model and evaluates its performance using Monte Carlo simulation.
-
-- **Part 4: Predicting Finals:** Predicts the outcome of a specific WNBA final matchup between the Las Vegas Aces and New York Liberty.
-
-## Usage
-
-To replicate the project's steps and results, follow the instructions in the Jupyter Notebook files provided. Make sure to have Python and the required packages installed.
-
-```bash
-jupyter notebook WNBA_Prediction.ipynb
-```
-
-## Technologies Used
-
-- Python
-- Pandas
-- Scikit-learn
+Built with Python, pandas and scikit-learn.
